@@ -1,0 +1,4 @@
+.cache/
+bin/
+build/
+vcpkg_installed/

@@ -1,0 +1,8 @@
+[
+{
+  "directory": "C:/Users/manue/Documents/code/trycurl/build/windows-release-static",
+  "command": "C:\\Users\\manue\\scoop\\apps\\llvm\\current\\bin\\clang.exe -DCURL_STATICLIB -isystem C:/Users/manue/Documents/code/trycurl/build/windows-release-static/vcpkg_installed/x64-windows-static/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -o CMakeFiles\\curl_zero.dir\\src\\main.c.obj -c C:\\Users\\manue\\Documents\\code\\trycurl\\src\\main.c",
+  "file": "C:\\Users\\manue\\Documents\\code\\trycurl\\src\\main.c",
+  "output": "CMakeFiles\\curl_zero.dir\\src\\main.c.obj"
+}
+]
