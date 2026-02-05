@@ -1,0 +1,11 @@
+Define vcpkg baseline: vcpkg consistent, additional guarantee of consistent builds:
+vcpkg x-update-baseline --add-initial-baseline
+
+vcpkg for cross-compiling to embedded targets (especially because of curl dependency): https://opencoursehub.cs.sfu.ca/bfraser/grav-cms/cmpt433/links/files/2024-student-howtos/Cross-compiling_External_C_C++LibrariesUsing_vcpkg.pdf
+
+Each build preset (under buildPresets) and test preset (under testPresets) has a "configurePreset": it means run only if the corresponding configure preset has been previously executed.
+
+The goal is to build as fast as possible:
+- clang instead of gcc
+- ninja instead of make 
+- 8 parallel jobs to for building

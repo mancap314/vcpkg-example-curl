@@ -1,5 +1,23 @@
 {
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "name": "vcpkg-example-curl",
+  "version": "1.0.0",
+  "description": "Illustrating how to use vcpkg to set up C project and manage its dependencies",
+  "homepage": "https://github.com/mancap314/vcpkg-example-curl",
+  "license": "MIT",
   "dependencies": [
-    "curl"
-  ]
+    {
+      "name": "curl",
+      "version>=": "8.5.0",
+      "features": [
+        "openssl",
+        "http2"
+      ]
+    },
+    {
+      "name": "lexbor",
+      "version>=": "2.3.0"
+    }
+  ],
+  "builtin-baseline": "3b3777fa3cd0c99a3ceba914e71ba75cf43d4219"
 }

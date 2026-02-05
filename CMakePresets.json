@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 6,
   "cmakeMinimumRequired": {
     "major": 3,
     "minor": 14,
@@ -11,6 +11,7 @@
       "hidden": true,
       "cacheVariables": {
         "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+        "CMAKE_C_COMPILER": "clang",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
         "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/bin",
         "CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG": "${sourceDir}/bin/debug",
@@ -248,155 +249,157 @@
   ],
   "buildPresets": [
     {
+      "name": "build-base",
+      "hidden": true,
+      "jobs": 8,
+      "verbose": false
+    },
+    {
       "name": "windows-debug-dynamic",
+      "inherits": "build-base",
       "configurePreset": "windows-debug-dynamic",
       "description": "Build Windows Debug (Dynamic)"
     },
     {
       "name": "windows-debug-static",
+      "inherits": "build-base",
       "configurePreset": "windows-debug-static",
       "description": "Build Windows Debug (Static)"
     },
     {
       "name": "windows-release-dynamic",
+      "inherits": "build-base",
       "configurePreset": "windows-release-dynamic",
       "description": "Build Windows Release (Dynamic)"
     },
     {
       "name": "windows-release-static",
+      "inherits": "build-base",
       "configurePreset": "windows-release-static",
       "description": "Build Windows Release (Static)"
     },
     {
       "name": "linux-debug-dynamic",
+      "inherits": "build-base",
       "configurePreset": "linux-debug-dynamic",
       "description": "Build Linux Debug (Dynamic)"
     },
     {
       "name": "linux-debug-static",
+      "inherits": "build-base",
       "configurePreset": "linux-debug-static",
       "description": "Build Linux Debug (Static)"
     },
     {
       "name": "linux-release-dynamic",
+      "inherits": "build-base",
       "configurePreset": "linux-release-dynamic",
       "description": "Build Linux Release (Dynamic)"
     },
     {
       "name": "linux-release-static",
+      "inherits": "build-base",
       "configurePreset": "linux-release-static",
       "description": "Build Linux Release (Static)"
     },
     {
       "name": "mac-debug-dynamic",
+      "inherits": "build-base",
       "configurePreset": "mac-debug-dynamic",
       "description": "Build macOS Debug (Dynamic)"
     },
     {
       "name": "mac-debug-static",
+      "inherits": "build-base",
       "configurePreset": "mac-debug-static",
       "description": "Build macOS Debug (Static)"
     },
     {
       "name": "mac-release-dynamic",
+      "inherits": "build-base",
       "configurePreset": "mac-release-dynamic",
       "description": "Build macOS Release (Dynamic)"
     },
     {
       "name": "mac-release-static",
+      "inherits": "build-base",
       "configurePreset": "mac-release-static",
       "description": "Build macOS Release (Static)"
     },
     {
       "name": "default",
+      "inherits": "build-base",
       "configurePreset": "default",
       "description": "Build default configuration"
     }
   ],
   "testPresets": [
     {
-      "name": "windows-debug-dynamic",
-      "configurePreset": "windows-debug-dynamic",
+      "name": "test-base",
+      "hidden": true,
       "output": {
         "outputOnFailure": true
       }
+    },
+    {
+      "name": "windows-debug-dynamic",
+      "configurePreset": "windows-debug-dynamic",
+      "inherits": "test-base"
     },
     {
       "name": "windows-debug-static",
       "configurePreset": "windows-debug-static",
-      "output": {
-        "outputOnFailure": true
-      }
+      "inherits": "test-base"
     },
     {
       "name": "windows-release-dynamic",
       "configurePreset": "windows-release-dynamic",
-      "output": {
-        "outputOnFailure": true
-      }
+      "inherits": "test-base"
     },
     {
       "name": "windows-release-static",
       "configurePreset": "windows-release-static",
-      "output": {
-        "outputOnFailure": true
-      }
+      "inherits": "test-base"
     },
     {
       "name": "linux-debug-dynamic",
       "configurePreset": "linux-debug-dynamic",
-      "output": {
-        "outputOnFailure": true
-      }
+      "inherits": "test-base"
     },
     {
       "name": "linux-debug-static",
       "configurePreset": "linux-debug-static",
-      "output": {
-        "outputOnFailure": true
-      }
+      "inherits": "test-base"
     },
     {
       "name": "linux-release-dynamic",
       "configurePreset": "linux-release-dynamic",
-      "output": {
-        "outputOnFailure": true
-      }
+      "inherits": "test-base"
     },
     {
       "name": "linux-release-static",
       "configurePreset": "linux-release-static",
-      "output": {
-        "outputOnFailure": true
-      }
+      "inherits": "test-base"
     },
     {
       "name": "mac-debug-dynamic",
       "configurePreset": "mac-debug-dynamic",
-      "output": {
-        "outputOnFailure": true
-      }
+      "inherits": "test-base"
     },
     {
       "name": "mac-debug-static",
       "configurePreset": "mac-debug-static",
-      "output": {
-        "outputOnFailure": true
-      }
+      "inherits": "test-base"
     },
     {
       "name": "mac-release-dynamic",
       "configurePreset": "mac-release-dynamic",
-      "output": {
-        "outputOnFailure": true
-      }
+      "inherits": "test-base"
     },
     {
       "name": "mac-release-static",
       "configurePreset": "mac-release-static",
-      "output": {
-        "outputOnFailure": true
-      }
+      "inherits": "test-base"
     }
   ]
 }
