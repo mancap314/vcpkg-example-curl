@@ -5,19 +5,16 @@
   "description": "Illustrating how to use vcpkg to set up C project and manage its dependencies",
   "homepage": "https://github.com/mancap314/vcpkg-example-curl",
   "license": "MIT",
+  "builtin-baseline": "3b3777fa3cd0c99a3ceba914e71ba75cf43d4219",
   "dependencies": [
     {
       "name": "curl",
-      "version>=": "8.5.0",
       "features": [
-        "openssl",
-        "http2"
-      ]
+        "http2",
+        "openssl"
+      ],
+      "version>=": "8.5.0"
     },
-    {
-      "name": "lexbor",
-      "version>=": "2.3.0"
-    }
-  ],
-  "builtin-baseline": "3b3777fa3cd0c99a3ceba914e71ba75cf43d4219"
+    "lexbor"
+  ]
 }
