@@ -9,6 +9,7 @@
     {
       "name": "vcpkg-base",
       "hidden": true,
+      "generator": "Ninja",
       "cacheVariables": {
         "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
         "CMAKE_C_COMPILER": "clang",
@@ -19,232 +20,159 @@
       }
     },
     {
-      "name": "windows-debug-dynamic",
-      "displayName": "Windows Debug (Dynamic)",
-      "description": "Windows debug build with dynamic linking",
-      "inherits": "vcpkg-base",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/windows-debug-dynamic",
+      "name": "vcpkg-windows",
+      "hidden": true,
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "VCPKG_TARGET_TRIPLET": "x64-windows",
-        "BUILD_SHARED_LIBS": "ON"
+        "VCPKG_TARGET_TRIPLET": "x64-windows"
       },
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
         "rhs": "Windows"
       }
+    },
+    {
+      "name": "vcpkg-linux",
+      "hidden": true,
+      "cacheVariables": {
+        "VCPKG_TARGET_TRIPLET": "x64-linux"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+    {
+      "name": "vcpkg-mac",
+      "hidden": true,
+      "cacheVariables": {
+        "VCPKG_TARGET_TRIPLET": "x64-os"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      }
+    },
+
+    {
+      "name": "vcpkg-dynamic",
+      "hidden": true,
+      "cacheVariables": {
+        "VCPKG_LIBRARY_LINKAGE": "dynamidynamic",
+        "BUILD_SHARED_LIBS": "ON"
+      }
+    },
+    {
+      "name": "vcpkg-static",
+      "hidden": true,
+      "cacheVariables": {
+        "VCPKG_LIBRARY_LINKAGE": "static",
+        "BUILD_SHARED_LIBS": "OFF"
+      }
+    },
+
+    {
+      "name": "vcpkg-debug-build",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "vcpkg-release-build",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+
+    {
+      "name": "windows-debug-dynamic",
+      "displayName": "Windows Debug (Dynamic)",
+      "description": "Windows debug build with dynamic linking",
+      "inherits": ["vcpkg-base", "vcpkg-windows", "vcpkg-dynamic", "vcpkg-debug-build"],
+      "binaryDir": "${sourceDir}/build/windows-debug-dynamic"
     },
     {
       "name": "windows-debug-static",
       "displayName": "Windows Debug (Static)",
       "description": "Windows debug build with static linking",
-      "inherits": "vcpkg-base",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/windows-debug-static",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "VCPKG_TARGET_TRIPLET": "x64-windows-static",
-        "BUILD_SHARED_LIBS": "OFF"
-      },
-      "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Windows"
-      }
+      "inherits": ["vcpkg-base", "vcpkg-windows", "vcpkg-static", "vcpkg-debug-build"],
+      "binaryDir": "${sourceDir}/build/windows-debug-static"
     },
     {
       "name": "windows-release-dynamic",
       "displayName": "Windows Release (Dynamic)",
       "description": "Windows release build with dynamic linking",
-      "inherits": "vcpkg-base",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/windows-release-dynamic",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release",
-        "VCPKG_TARGET_TRIPLET": "x64-windows",
-        "BUILD_SHARED_LIBS": "ON"
-      },
-      "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Windows"
-      }
+      "inherits": ["vcpkg-base", "vcpkg-windows", "vcpkg-dynamic", "vcpkg-release-build"],
+      "binaryDir": "${sourceDir}/build/windows-release-dynamic"
     },
     {
       "name": "windows-release-static",
       "displayName": "Windows Release (Static)",
       "description": "Windows release build with static linking",
-      "inherits": "vcpkg-base",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/windows-release-static",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release",
-        "VCPKG_TARGET_TRIPLET": "x64-windows-static",
-        "BUILD_SHARED_LIBS": "OFF"
-      },
-      "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Windows"
-      }
+      "inherits": ["vcpkg-base", "vcpkg-windows", "vcpkg-static", "vcpkg-release-build"],
+      "binaryDir": "${sourceDir}/build/windows-release-static"
     },
+
     {
       "name": "linux-debug-dynamic",
       "displayName": "Linux Debug (Dynamic)",
       "description": "Linux debug build with dynamic linking",
-      "inherits": "vcpkg-base",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/linux-debug-dynamic",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "VCPKG_TARGET_TRIPLET": "x64-linux",
-        "BUILD_SHARED_LIBS": "ON"
-      },
-      "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Linux"
-      }
+      "inherits": ["vcpkg-base", "vcpkg-linux", "vcpkg-dynamic", "vcpkg-debug-build"],
+      "binaryDir": "${sourceDir}/build/linux-debug-dynamic"
     },
     {
       "name": "linux-debug-static",
       "displayName": "Linux Debug (Static)",
       "description": "Linux debug build with static linking",
-      "inherits": "vcpkg-base",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/linux-debug-static",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "VCPKG_TARGET_TRIPLET": "x64-linux",
-        "BUILD_SHARED_LIBS": "OFF"
-      },
-      "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Linux"
-      }
+      "inherits": ["vcpkg-base", "vcpkg-linux", "vcpkg-static", "vcpkg-debug-build"],
+      "binaryDir": "${sourceDir}/build/linux-debug-static"
     },
     {
       "name": "linux-release-dynamic",
       "displayName": "Linux Release (Dynamic)",
       "description": "Linux release build with dynamic linking",
-      "inherits": "vcpkg-base",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/linux-release-dynamic",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release",
-        "VCPKG_TARGET_TRIPLET": "x64-linux",
-        "BUILD_SHARED_LIBS": "ON"
-      },
-      "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Linux"
-      }
+      "inherits": ["vcpkg-base", "vcpkg-linux", "vcpkg-dynamic", "vcpkg-release-build"],
+      "binaryDir": "${sourceDir}/build/linux-release-dynamic"
     },
     {
       "name": "linux-release-static",
       "displayName": "Linux Release (Static)",
       "description": "Linux release build with static linking",
-      "inherits": "vcpkg-base",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/linux-release-static",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release",
-        "VCPKG_TARGET_TRIPLET": "x64-linux",
-        "BUILD_SHARED_LIBS": "OFF"
-      },
-      "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Linux"
-      }
+      "inherits": ["vcpkg-base", "vcpkg-linux", "vcpkg-static", "vcpkg-release-build"],
+      "binaryDir": "${sourceDir}/build/linux-release-dynamic"
     },
+    
     {
       "name": "mac-debug-dynamic",
-      "displayName": "macOS Debug (Dynamic)",
-      "description": "macOS debug build with dynamic linking",
-      "inherits": "vcpkg-base",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/mac-debug-dynamic",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "VCPKG_TARGET_TRIPLET": "x64-osx",
-        "BUILD_SHARED_LIBS": "ON"
-      },
-      "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Darwin"
-      }
+      "displayName": "MacOS Debug (Dynamic)",
+      "description": "mac debug build with dynamic linking",
+      "inherits": ["vcpkg-base", "vcpkg-mac", "vcpkg-dynamic", "vcpkg-debug-build"],
+      "binaryDir": "${sourceDir}/build/mac-debug-dynamic"
     },
     {
       "name": "mac-debug-static",
-      "displayName": "macOS Debug (Static)",
-      "description": "macOS debug build with static linking",
-      "inherits": "vcpkg-base",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/mac-debug-static",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "VCPKG_TARGET_TRIPLET": "x64-osx",
-        "BUILD_SHARED_LIBS": "OFF"
-      },
-      "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Darwin"
-      }
+      "displayName": "MacOS Debug (Static)",
+      "description": "MacOS debug build with static linking",
+      "inherits": ["vcpkg-base", "vcpkg-mac", "vcpkg-static", "vcpkg-debug-build"],
+      "binaryDir": "${sourceDir}/build/mac-debug-static"
     },
     {
       "name": "mac-release-dynamic",
-      "displayName": "macOS Release (Dynamic)",
-      "description": "macOS release build with dynamic linking",
-      "inherits": "vcpkg-base",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/mac-release-dynamic",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release",
-        "VCPKG_TARGET_TRIPLET": "x64-osx",
-        "BUILD_SHARED_LIBS": "ON"
-      },
-      "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Darwin"
-      }
+      "displayName": "MacOS Release (Dynamic)",
+      "description": "MacOS release build with dynamic linking",
+      "inherits": ["vcpkg-base", "vcpkg-mac", "vcpkg-dynamic", "vcpkg-release-build"],
+      "binaryDir": "${sourceDir}/build/mac-release-dynamic"
     },
     {
       "name": "mac-release-static",
-      "displayName": "macOS Release (Static)",
-      "description": "macOS release build with static linking",
-      "inherits": "vcpkg-base",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/mac-release-static",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release",
-        "VCPKG_TARGET_TRIPLET": "x64-osx",
-        "BUILD_SHARED_LIBS": "OFF"
-      },
-      "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Darwin"
-      }
-    },
-    {
-      "name": "default",
-      "displayName": "Default (Debug Dynamic)",
-      "description": "Default debug build for current platform with dynamic linking",
-      "inherits": "vcpkg-base",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/default",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "BUILD_SHARED_LIBS": "ON"
-      }
+      "displayName": "MacOS Release (Static)",
+      "description": "MacOS release build with static linking",
+      "inherits": ["vcpkg-base", "vcpkg-mac", "vcpkg-static", "vcpkg-release-build"],
+      "binaryDir": "${sourceDir}/build/mac-release-static"
     }
   ],
   "buildPresets": [
@@ -252,7 +180,7 @@
       "name": "build-base",
       "hidden": true,
       "jobs": 8,
-      "verbose": false
+      "verbose": true 
     },
     {
       "name": "windows-debug-dynamic",
@@ -325,14 +253,9 @@
       "inherits": "build-base",
       "configurePreset": "mac-release-static",
       "description": "Build macOS Release (Static)"
-    },
-    {
-      "name": "default",
-      "inherits": "build-base",
-      "configurePreset": "default",
-      "description": "Build default configuration"
     }
   ],
+
   "testPresets": [
     {
       "name": "test-base",

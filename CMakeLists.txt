@@ -7,7 +7,9 @@ project(trycurl)
 
 find_package(CURL REQUIRED)
 
-add_executable(curl_zero src/main.c)
+add_executable(curl_zero src/main.c src/utils.c)
+
+target_include_directories(curl_zero PRIVATE include)
 
 set_property(TARGET curl_zero PROPERTY C_STANDARD 11)
 set_property(TARGET curl_zero PROPERTY C_STANDARD_REQUIRED ON)
@@ -19,7 +21,7 @@ if(BUILD_SHARED_LIBS)
 else()
   # Static build - link with static library
   target_compile_definitions(curl_zero PRIVATE LEXBOR_STATIC)
-  find_library(LEXBOR_LIBRARY NAMES lexbor_static REQUIRED)
+  find_library(LEXBOR_LIBRARY NAMES lexbor REQUIRED)
 endif()
 
 find_path(LEXBOR_INCLUDE_DIR NAMES lexbor/core/base.h REQUIRED)
