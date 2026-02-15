@@ -26,10 +26,10 @@ typedef enum {
 } fetch_title_status;
 
 static const char fetch_title_message[FT_N_FETCH_TITLE_STATUS][30] = {
-    [FT_SUCCESS] = "OK",
-    [FT_CREATE_FAILED] = "Failed to create document",
-    [FT_PARSING_FAILED] = "Failed to parse document",
-    [FT_NO_TITLE] = "No title in document"};
+    [FT_SUCCESS] = "OK\n",
+    [FT_CREATE_FAILED] = "Failed to create document\n",
+    [FT_PARSING_FAILED] = "Failed to parse document\n",
+    [FT_NO_TITLE] = "No title in document\n"};
 
 static size_t mem_cb(void *contents, size_t size, size_t nmemb, void *userp);
 int fetch_html(const char *url_to_get, struct MemoryStruct *chunk);

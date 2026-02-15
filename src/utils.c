@@ -1,4 +1,6 @@
 #include "utils.h"
+#include <curl/curl.h>
+#include <curl/easy.h>
 
 static size_t mem_cb(void *contents, size_t size, size_t nmemb, void *userp) {
   size_t realsize = size * nmemb;
@@ -31,6 +33,10 @@ int fetch_html(const char *url_to_get, struct MemoryStruct *chunk) {
   /* specify url to get */
   curl_easy_setopt(curl_handle, CURLOPT_URL, url_to_get);
 
+  /* Follow (max 10) redirection */
+  curl_easy_setopt(curl_handle, CURLOPT_FOLLOWLOCATION, 1L);
+  curl_easy_setopt(curl_handle, CURLOPT_MAXREDIRS, 10L);
+
   /* send all received data to this callback function */
   curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, mem_cb);
 
@@ -45,9 +51,15 @@ int fetch_html(const char *url_to_get, struct MemoryStruct *chunk) {
   // Posted by ariia
   // Retrieved 2026-02-05, License - CC BY-SA 4.0
 
-  curl_easy_setopt(curl_handle, CURLOPT_SSL_VERIFYSTATUS, 1);
-  curl_easy_setopt(curl_handle, CURLOPT_CAINFO, "ca-certificates/cacert.pem");
-  curl_easy_setopt(curl_handle, CURLOPT_CAPATH, "ca-certificates/cacert.pem");
+  char certificate_path[] = "ca-certificates/cacert.pem";
+
+  curl_easy_setopt(curl_handle, CURLOPT_CAINFO, certificate_path);
+  curl_easy_setopt(curl_handle, CURLOPT_CAPATH, certificate_path);
+
+  curl_easy_setopt(curl_handle, CURLOPT_SSL_VERIFYPEER, 1L);
+  curl_easy_setopt(curl_handle, CURLOPT_SSL_VERIFYHOST, 2L);
+  curl_easy_setopt(curl_handle, CURLOPT_SSL_VERIFYSTATUS, 0L); // Disable OCSP
+  curl_easy_setopt(curl_handle, CURLOPT_VERBOSE, 0L);
 
   /* get it */
   res = curl_easy_perform(curl_handle);
@@ -62,7 +74,7 @@ int fetch_html(const char *url_to_get, struct MemoryStruct *chunk) {
      * contains the remote file. Do something with it
      */
 
-    printf("%zu bytes retrieved:\n%s \n", chunk->size, chunk->memory);
+    printf("[INFO] %s: %zu bytes retrieved.\n", __func__, chunk->size);
   }
 
   /* cleanup curl stuff */

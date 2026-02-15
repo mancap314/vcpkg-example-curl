@@ -22,9 +22,6 @@
     {
       "name": "vcpkg-windows",
       "hidden": true,
-      "cacheVariables": {
-        "VCPKG_TARGET_TRIPLET": "x64-windows"
-      },
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
@@ -34,9 +31,6 @@
     {
       "name": "vcpkg-linux",
       "hidden": true,
-      "cacheVariables": {
-        "VCPKG_TARGET_TRIPLET": "x64-linux"
-      },
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
@@ -46,9 +40,6 @@
     {
       "name": "vcpkg-mac",
       "hidden": true,
-      "cacheVariables": {
-        "VCPKG_TARGET_TRIPLET": "x64-os"
-      },
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
@@ -57,31 +48,75 @@
     },
 
     {
-      "name": "vcpkg-dynamic",
+      "name": "windows-dynamic",
       "hidden": true,
+      "inherits": "vcpkg-windows",
       "cacheVariables": {
-        "VCPKG_LIBRARY_LINKAGE": "dynamidynamic",
-        "BUILD_SHARED_LIBS": "ON"
+        "VCPKG_LIBRARY_LINKAGE": "dynamic",
+        "BUILD_SHARED_LIBS": "ON",
+        "VCPKG_TARGET_TRIPLET": "x64-windows"
       }
     },
     {
-      "name": "vcpkg-static",
+      "name": "windows-static",
       "hidden": true,
+      "inherits": "vcpkg-windows",
       "cacheVariables": {
         "VCPKG_LIBRARY_LINKAGE": "static",
-        "BUILD_SHARED_LIBS": "OFF"
+        "BUILD_SHARED_LIBS": "OFF",
+        "VCPKG_TARGET_TRIPLET": "x64-windows-static"
+      }
+    },
+    {
+      "name": "linux-dynamic",
+      "hidden": true,
+      "inherits": "vcpkg-linux",
+      "cacheVariables": {
+        "VCPKG_LIBRARY_LINKAGE": "dynamic",
+        "BUILD_SHARED_LIBS": "ON",
+        "VCPKG_TARGET_TRIPLET": "x64-linux"
+      }
+    },
+    {
+      "name": "linux-static",
+      "hidden": true,
+      "inherits": "vcpkg-linux",
+      "cacheVariables": {
+        "VCPKG_LIBRARY_LINKAGE": "static",
+        "BUILD_SHARED_LIBS": "OFF",
+        "VCPKG_TARGET_TRIPLET": "x64-linux-static"
+      }
+    },
+    {
+      "name": "mac-dynamic",
+      "hidden": true,
+      "inherits": "vcpkg-mac",
+      "cacheVariables": {
+        "VCPKG_LIBRARY_LINKAGE": "dynamic",
+        "BUILD_SHARED_LIBS": "ON",
+        "VCPKG_TARGET_TRIPLET": "x64-os"
+      }
+    },
+    {
+      "name": "mac-static",
+      "hidden": true,
+      "inherits": "vcpkg-mac",
+      "cacheVariables": {
+        "VCPKG_LIBRARY_LINKAGE": "static",
+        "BUILD_SHARED_LIBS": "OFF",
+        "VCPKG_TARGET_TRIPLET": "x64-os-static"
       }
     },
 
     {
-      "name": "vcpkg-debug-build",
+      "name": "debug-build",
       "hidden": true,
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
       }
     },
     {
-      "name": "vcpkg-release-build",
+      "name": "release-build",
       "hidden": true,
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
@@ -92,57 +127,60 @@
       "name": "windows-debug-dynamic",
       "displayName": "Windows Debug (Dynamic)",
       "description": "Windows debug build with dynamic linking",
-      "inherits": ["vcpkg-base", "vcpkg-windows", "vcpkg-dynamic", "vcpkg-debug-build"],
+      "inherits": ["vcpkg-base", "windows-dynamic", "debug-build"],
       "binaryDir": "${sourceDir}/build/windows-debug-dynamic"
     },
     {
       "name": "windows-debug-static",
       "displayName": "Windows Debug (Static)",
       "description": "Windows debug build with static linking",
-      "inherits": ["vcpkg-base", "vcpkg-windows", "vcpkg-static", "vcpkg-debug-build"],
+      "inherits": ["vcpkg-base", "windows-static", "debug-build"],
       "binaryDir": "${sourceDir}/build/windows-debug-static"
     },
     {
       "name": "windows-release-dynamic",
       "displayName": "Windows Release (Dynamic)",
       "description": "Windows release build with dynamic linking",
-      "inherits": ["vcpkg-base", "vcpkg-windows", "vcpkg-dynamic", "vcpkg-release-build"],
+      "inherits": ["vcpkg-base", "windows-dynamic", "release-build"],
       "binaryDir": "${sourceDir}/build/windows-release-dynamic"
     },
     {
       "name": "windows-release-static",
       "displayName": "Windows Release (Static)",
       "description": "Windows release build with static linking",
-      "inherits": ["vcpkg-base", "vcpkg-windows", "vcpkg-static", "vcpkg-release-build"],
-      "binaryDir": "${sourceDir}/build/windows-release-static"
+      "inherits": ["vcpkg-base", "windows-static", "release-build"],
+      "binaryDir": "${sourceDir}/build/windows-release-static",
+      "cacheVariables": {
+        "VCPKG_TARGET_TRIPLET": "x64-windows-static" 
+      } 
     },
 
     {
       "name": "linux-debug-dynamic",
       "displayName": "Linux Debug (Dynamic)",
       "description": "Linux debug build with dynamic linking",
-      "inherits": ["vcpkg-base", "vcpkg-linux", "vcpkg-dynamic", "vcpkg-debug-build"],
+      "inherits": ["vcpkg-base", "linux-dynamic", "debug-build"],
       "binaryDir": "${sourceDir}/build/linux-debug-dynamic"
     },
     {
       "name": "linux-debug-static",
       "displayName": "Linux Debug (Static)",
       "description": "Linux debug build with static linking",
-      "inherits": ["vcpkg-base", "vcpkg-linux", "vcpkg-static", "vcpkg-debug-build"],
+      "inherits": ["vcpkg-base", "linux-static", "debug-build"],
       "binaryDir": "${sourceDir}/build/linux-debug-static"
     },
     {
       "name": "linux-release-dynamic",
       "displayName": "Linux Release (Dynamic)",
       "description": "Linux release build with dynamic linking",
-      "inherits": ["vcpkg-base", "vcpkg-linux", "vcpkg-dynamic", "vcpkg-release-build"],
+      "inherits": ["vcpkg-base", "linux-dynamic", "release-build"],
       "binaryDir": "${sourceDir}/build/linux-release-dynamic"
     },
     {
       "name": "linux-release-static",
       "displayName": "Linux Release (Static)",
       "description": "Linux release build with static linking",
-      "inherits": ["vcpkg-base", "vcpkg-linux", "vcpkg-static", "vcpkg-release-build"],
+      "inherits": ["vcpkg-base", "linux-static", "release-build"],
       "binaryDir": "${sourceDir}/build/linux-release-dynamic"
     },
     
@@ -150,28 +188,28 @@
       "name": "mac-debug-dynamic",
       "displayName": "MacOS Debug (Dynamic)",
       "description": "mac debug build with dynamic linking",
-      "inherits": ["vcpkg-base", "vcpkg-mac", "vcpkg-dynamic", "vcpkg-debug-build"],
+      "inherits": ["vcpkg-base", "mac-dynamic", "debug-build"],
       "binaryDir": "${sourceDir}/build/mac-debug-dynamic"
     },
     {
       "name": "mac-debug-static",
       "displayName": "MacOS Debug (Static)",
       "description": "MacOS debug build with static linking",
-      "inherits": ["vcpkg-base", "vcpkg-mac", "vcpkg-static", "vcpkg-debug-build"],
+      "inherits": ["vcpkg-base", "mac-static", "debug-build"],
       "binaryDir": "${sourceDir}/build/mac-debug-static"
     },
     {
       "name": "mac-release-dynamic",
       "displayName": "MacOS Release (Dynamic)",
       "description": "MacOS release build with dynamic linking",
-      "inherits": ["vcpkg-base", "vcpkg-mac", "vcpkg-dynamic", "vcpkg-release-build"],
+      "inherits": ["vcpkg-base", "mac-dynamic", "release-build"],
       "binaryDir": "${sourceDir}/build/mac-release-dynamic"
     },
     {
       "name": "mac-release-static",
       "displayName": "MacOS Release (Static)",
       "description": "MacOS release build with static linking",
-      "inherits": ["vcpkg-base", "vcpkg-mac", "vcpkg-static", "vcpkg-release-build"],
+      "inherits": ["vcpkg-base", "mac-static", "release-build"],
       "binaryDir": "${sourceDir}/build/mac-release-static"
     }
   ],

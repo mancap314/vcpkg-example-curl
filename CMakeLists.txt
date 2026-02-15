@@ -15,16 +15,22 @@ set_property(TARGET curl_zero PROPERTY C_STANDARD 11)
 set_property(TARGET curl_zero PROPERTY C_STANDARD_REQUIRED ON)
 set_property(TARGET curl_zero PROPERTY C_EXTENSIONS OFF)
 
-if(BUILD_SHARED_LIBS)
-  # Dynamic build - link with DLL import library
-  find_library(LEXBOR_LIBRARY NAMES lexbor REQUIRED)
-else()
-  # Static build - link with static library
-  target_compile_definitions(curl_zero PRIVATE LEXBOR_STATIC)
-  find_library(LEXBOR_LIBRARY NAMES lexbor REQUIRED)
-endif()
+# if(BUILD_SHARED_LIBS)
+#   # Dynamic build - link with DLL import library
+#   find_library(LEXBOR_LIBRARY NAMES lexbor REQUIRED)
+# else()
+#   # Static build - link with static library
+#   target_compile_definitions(curl_zero PRIVATE LEXBOR_STATIC)
+#   find_library(LEXBOR_LIBRARY NAMES lexbor REQUIRED)
+# endif()
 
 find_path(LEXBOR_INCLUDE_DIR NAMES lexbor/core/base.h REQUIRED)
+if (BUILD_SHARED_LIBS)
+  find_library(LEXBOR_LIBRARY NAMES lexbor REQUIRED)
+else()
+  target_compile_definitions(curl_zero PRIVATE LEXBOR_STATIC)
+  find_library(LEXBOR_LIBRARY NAMES lexbor_static REQUIRED)
+endif()
 
 target_link_libraries(curl_zero PRIVATE CURL::libcurl)
 
