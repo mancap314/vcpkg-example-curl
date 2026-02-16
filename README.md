@@ -5,7 +5,7 @@ This repo implement a small but full-fledged project in C leveraging the [vcpkg]
 It's a full-fledged project in the sense that in contains a *src/* directory with the *.c* files, an *include/* directory with the *.h* files, and a *tests/* directory with real tests.
 
 ## Motivation
-C projects often try to reduce to 0 the amount of dependencies they use. As [Casey Muratori](https://en.wikipedia.org/wiki/Casey_Muratori) said in his legndary [Handmade Hero](https://guide.handmadehero.org/)
+C projects often try to reduce to 0 the amount of dependencies they use. As [Casey Muratori](https://en.wikipedia.org/wiki/Casey_Muratori) said in his legendary [Handmade Hero](https://guide.handmadehero.org/)
 > Dependencies are fine, but we will use none
 
 This approach was very influential in the C developer community. It has serious advantages, such as avoiding dependency hell (downloading half the internet with [npm](https://www.npmjs.com/) or [cargo](https://github.com/rust-lang/cargo)), thus also avoiding security threats due to [supply-chain attacks](https://www.trellix.com/blogs/research/npm-account-hijacking-and-the-rise-of-supply-chain-attacks/).
@@ -68,11 +68,11 @@ The presets inherited from are *hidden*: they can't be used directly, but only i
 
 
 ## Performance
-The compiler is set to *clang* (see *configurePresets->cacheVariables->CMAKE_C_COMPILER* in [cmakePresets.json](./CMakePresets.json)), which normally [compiles faster than gcc](https://github.com/nordlow/compiler-benchmark).
+The compiler is set to *clang* (see *configurePresets->cacheVariables->CMAKE_C_COMPILER* in [CMakePresets.json](./CMakePresets.json)), which normally [compiles faster than gcc](https://github.com/nordlow/compiler-benchmark).
 
 Also used Ninja instead of Make as build system, since it has a [shorter build time](https://mesonbuild.com/Simple-comparison.html).
 
-Additionally, the build is performed by 8 threads in parallel (see *buildPresets[0]->jobs* in [cmakePresets.json](./CMakePresets.json))).
+Additionally, the build is performed by 8 threads in parallel (see *buildPresets[0]->jobs* in [CMakePresets.json](./CMakePresets.json))).
 
 ## Adding dependencies
 On the [vcpkg website](https://vcpkg.io/en/packages?query=) you can browse for packages to install in your project. By entering `vcpkg port install package-name` in the terminal, it will add an entry in *vcpkg.json*. However, it will be a single line containing the package name. Better is to have a full entry within *dependencies* containing the *name* and *version* fields (see [vcpkg.json](./vcpkg.json) file in this project).
@@ -146,4 +146,6 @@ However it has also advantages:
 - CMake caching and parallelization ensuring fast incremental builds
 
 All in all, it may possibly makes more sense to use CMake [FetchContent](https://cmake.org/cmake/help/latest/module/FetchContent.html), but I don't have enough experience with it to judge.
+
+Nonetheless, I am pretty confident that vcpkg will improve, and that it will be a viable solution for managing dependencies on industry-grade projects.
 
