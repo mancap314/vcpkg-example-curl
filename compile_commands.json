@@ -10,5 +10,17 @@
   "command": "C:\\Users\\manue\\scoop\\apps\\llvm\\current\\bin\\clang.exe -DCURL_STATICLIB -DLEXBOR_STATIC -IC:/Users/manue/Documents/code/trycurl/include -isystem C:/Users/manue/Documents/code/trycurl/build/windows-release-static/vcpkg_installed/x64-windows-static/include -O3 -DNDEBUG -std=c11 -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -o CMakeFiles\\curl_zero.dir\\src\\utils.c.obj -c C:\\Users\\manue\\Documents\\code\\trycurl\\src\\utils.c",
   "file": "C:\\Users\\manue\\Documents\\code\\trycurl\\src\\utils.c",
   "output": "CMakeFiles\\curl_zero.dir\\src\\utils.c.obj"
+},
+{
+  "directory": "C:/Users/manue/Documents/code/trycurl/build/windows-release-static",
+  "command": "C:\\Users\\manue\\scoop\\apps\\llvm\\current\\bin\\clang.exe -DCACERT_PATH=\\\"C:/Users/manue/Documents/code/trycurl/ca-certificates/cacert.pem\\\" -DCURL_STATICLIB -DLEXBOR_STATIC -IC:/Users/manue/Documents/code/trycurl/include -isystem C:/Users/manue/Documents/code/trycurl/build/windows-release-static/vcpkg_installed/x64-windows-static/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -o CMakeFiles\\test_utils.dir\\tests\\test_utils.c.obj -c C:\\Users\\manue\\Documents\\code\\trycurl\\tests\\test_utils.c",
+  "file": "C:\\Users\\manue\\Documents\\code\\trycurl\\tests\\test_utils.c",
+  "output": "CMakeFiles\\test_utils.dir\\tests\\test_utils.c.obj"
+},
+{
+  "directory": "C:/Users/manue/Documents/code/trycurl/build/windows-release-static",
+  "command": "C:\\Users\\manue\\scoop\\apps\\llvm\\current\\bin\\clang.exe -DCACERT_PATH=\\\"C:/Users/manue/Documents/code/trycurl/ca-certificates/cacert.pem\\\" -DCURL_STATICLIB -DLEXBOR_STATIC -IC:/Users/manue/Documents/code/trycurl/include -isystem C:/Users/manue/Documents/code/trycurl/build/windows-release-static/vcpkg_installed/x64-windows-static/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -o CMakeFiles\\test_utils.dir\\src\\utils.c.obj -c C:\\Users\\manue\\Documents\\code\\trycurl\\src\\utils.c",
+  "file": "C:\\Users\\manue\\Documents\\code\\trycurl\\src\\utils.c",
+  "output": "CMakeFiles\\test_utils.dir\\src\\utils.c.obj"
 }
 ]

@@ -299,7 +299,11 @@
       "name": "test-base",
       "hidden": true,
       "output": {
-        "outputOnFailure": true
+        "outputOnFailure": true,
+        "verbosity": "verbose"
+      },
+      "execution": {
+        "stopOnFailure": false
       }
     },
     {

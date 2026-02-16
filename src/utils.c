@@ -2,6 +2,10 @@
 #include <curl/curl.h>
 #include <curl/easy.h>
 
+#ifndef CACERT_PATH
+#define CACERT_PATH "ca-certificates/cacert.pem"
+#endif
+
 static size_t mem_cb(void *contents, size_t size, size_t nmemb, void *userp) {
   size_t realsize = size * nmemb;
   struct MemoryStruct *mem = (struct MemoryStruct *)userp;
@@ -51,10 +55,8 @@ int fetch_html(const char *url_to_get, struct MemoryStruct *chunk) {
   // Posted by ariia
   // Retrieved 2026-02-05, License - CC BY-SA 4.0
 
-  char certificate_path[] = "ca-certificates/cacert.pem";
-
-  curl_easy_setopt(curl_handle, CURLOPT_CAINFO, certificate_path);
-  curl_easy_setopt(curl_handle, CURLOPT_CAPATH, certificate_path);
+  curl_easy_setopt(curl_handle, CURLOPT_CAINFO, CACERT_PATH);
+  curl_easy_setopt(curl_handle, CURLOPT_CAPATH, CACERT_PATH);
 
   curl_easy_setopt(curl_handle, CURLOPT_SSL_VERIFYPEER, 1L);
   curl_easy_setopt(curl_handle, CURLOPT_SSL_VERIFYHOST, 2L);
