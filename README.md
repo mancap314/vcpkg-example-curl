@@ -1,12 +1,26 @@
-# VCPKG Example Curl
+# VCPKG Project Blueprint
 
-This repo implement a project in C leveraging the [vcpkg](https://vcpkg.io) package manager. It builds a program that fetches the title of a website given its url, similar to the [example](https://doc.rust-lang.org/stable/book/ch17-01-futures-and-syntax.html) of [rust book](https://doc.rust-lang.org/stable/book/)
+This repo implement a small but full-fledged project in C leveraging the [vcpkg](https://vcpkg.io) package manager. It builds a program that fetches the title of a website given its url, similar to the [example](https://doc.rust-lang.org/stable/book/ch17-01-futures-and-syntax.html) of [rust book](https://doc.rust-lang.org/stable/book/)
+
+It's a full-fledged project in the sense that in contains a *src/* directory with the *.c* files, an *include/* directory with the *.h* files, and a *tests/* directory with real tests.
+
+## Motivation
+C projects often try to reduce to 0 the amount of dependencies they use. As [Casey Muratori](https://en.wikipedia.org/wiki/Casey_Muratori) said in his legndary [Handmade Hero](https://guide.handmadehero.org/)
+> Dependencies are fine, but we will use none
+
+This approach was very influential in the C developer community. It has serious advantages, such as avoiding dependency hell (downloading half the internet with [npm](https://www.npmjs.com/) or [cargo](https://github.com/rust-lang/cargo)), thus also avoiding security threats due to [supply-chain attacks](https://www.trellix.com/blogs/research/npm-account-hijacking-and-the-rise-of-supply-chain-attacks/).
+
+However, it prevents building on the work of other, and making the C ecosystem thus richer.
+
+Often also dependencies are consumed in the form of [stb-style](https://github.com/nothings/stb) header only libraries, that you only ned to drop in your source code.
+
+But what if you want to use more extensive dependencies, in a way that it stays consistent among the local settings of different developers? In this case, a pckage manager such as vcpkg makes sense.
 
 ## dependencies
 The dependencies used by this project are
-- [curl](https://vcpkg.io/en/package/curl)
-- [lexbor](https://vcpkg.io/en/package/lexbor), to parse html strings
-- [check](https://vcpkg.io/en/package/check), to perform unit tests
+- [curl](https://vcpkg.io/en/package/curl): to fetch content from the web
+- [lexbor](https://vcpkg.io/en/package/lexbor): to parse html strings
+- [check](https://vcpkg.io/en/package/check): to perform unit tests
 
 ## Prerequisites
 First you need to install:
@@ -76,8 +90,6 @@ where `ThePackage` is the name of the package you installed with `vcpkg` and `th
 **Bad case**: the vcpkg port of your library does not contain a `<PackageName>Config.cmake` file. In this case, `find_package()` does not work (see [cmake documentation](https://cmake.org/cmake/help/latest/command/find_package.html)) and thus you have to include the library in three steps:
 1. Find the `include/` path of the library. For `lexbor`, I did it through:
 ```
-```
-```
 find_path(LEXBOR_INCLUDE_DIR NAMES lexbor/core/base.h REQUIRED)
 ```
 Basically it's telling cmake: "the include directory of lexbor is thee directory containing `lexbor/core/base.h`".
@@ -87,15 +99,15 @@ Basically it's telling cmake: "the include directory of lexbor is thee directory
 if (BUILD_SHARED_LIBS)
   find_library(LEXBOR_LIBRARY NAMES lexbor REQUIRED)
 else()
-  target_compile_definitions(curl_zero PRIVATE LEXBOR_STATIC)
+  target_compile_definitions(fetch_url_title PRIVATE LEXBOR_STATIC)
   find_library(LEXBOR_LIBRARY NAMES lexbor_static REQUIRED)
 endif()
 ```
 
-3. Add the include directory and the library of the package to the target (my target here is called `curl-zero`):
+3. Add the include directory and the library of the package to the target (my target here is called `fetch_url_title`):
 ```
-target_include_directories(curl_zero PRIVATE ${LEXBOR_INCLUDE_DIR})
-target_link_libraries(curl_zero PRIVATE ${LEXBOR_LIBRARY})
+target_include_directories(fetch_url_title PRIVATE ${LEXBOR_INCLUDE_DIR})
+target_link_libraries(fetch_url_title PRIVATE ${LEXBOR_LIBRARY})
 ```
 Ooof!!
 
@@ -103,7 +115,7 @@ You have to do the last step for each target using this "misbehaved" package. Th
 
 
 ## Miscellanous
-In order to use the clang LSP in neovim, with nice stuffs like syntax highlighting, auto-completion, compile checks, you need a file called *compile_commands.json* at the root of your project. How to obtain it? 
+In order to use the [clang LSP](https://blog.qsliu.dev/post/develop-c-cpp/) in neovim, with nice stuffs like syntax highlighting, auto-completion, compile checks, you need a file called *compile_commands.json* at the root of your project. How to obtain it? 
 In [CMakePresets.json](./CMakePresets.json), set *cacheVariables->CMAKE_EXPORT_COMPILE_COMMANDS* to *ON*. Then after executing `cmake --preset your-preset-name` in the terminal, this file will be generated under *build/your-preset-name/*. Just copy it at the root of your project.
 
 You also have to declare the vcpkg toolchain at the top of the *CMakeLists.txt* file:
@@ -120,9 +132,18 @@ And also for avoiding dealing with relative file paths of artefacts required by 
 This way, you can use the macro variable `YOUR_FILE_PATH` in your code to get a path that works.
 
 ## Opinion
-This combination vcpkg + CMake is quite convenient to deal with external dependencies. However it feels somehow quite clunky to first define the package dependencies in *vcpkg.json* and then integrate them in *CMakeLists.txt*
+This combination vcpkg + CMake is quite convenient to deal with external dependencies. However it feels somehow quite clunky to first define the package dependencies in *vcpkg.json* and then integrate them in *CMakeLists.txt*. I get that it allows for more flexibility and fine tuning, but it's also way heavier that just defining once your dependencies in requirements.txt for python or in Cargo.toml in Rust.
 
+Also the vcpkg repo you have to clone locally is about 1GB (sorry what?).
 
+Another annoying thing is that you can only define the version of dependencies through *version>=* in *vcpkg.json*. What if the project doesn't require a minimal version, but a fix version for given packages?
 
+Also many interesting packages are not yet referenced by vcpkg.
 
+However it has also advantages:
+- Ensuring strong consistency between builds on different local setups, by enforcing the same compiler, build system, and minimal package version.
+- Ease of generating release / debug builds no matter the platform (windows, linux, mac)
+- CMake caching and parallelization ensuring fast incremental builds
+
+All in all, it may possibly makes more sense to use CMake [FetchContent](https://cmake.org/cmake/help/latest/module/FetchContent.html), but I don't have enough experience with it to judge.
 
